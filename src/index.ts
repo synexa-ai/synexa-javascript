@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 import { FileOutput } from './file-output';
 
 interface SynexaOptions {
-  apiKey: string;
+  auth: string;
   baseUrl?: string;
 }
 
@@ -46,12 +46,12 @@ interface PredictionResponse {
   } | null;
 }
 
-export class Synexa {
+export default class Synexa {
   private client: AxiosInstance;
   private apiKey: string;
 
   constructor(options: SynexaOptions) {
-    this.apiKey = options.apiKey;
+    this.apiKey = options.auth;
     this.client = axios.create({
       baseURL: options.baseUrl || 'https://api.synexa.ai/v1',
       headers: {

@@ -16,17 +16,17 @@ Import the package:
 
 ```typescript
 // ESM
-import { Synexa } from 'synexa';
+import Synexa from 'synexa';
 
 // CommonJS
-const { Synexa } = require('synexa');
+const Synexa = require('synexa').default;
 ```
 
 Instantiate the client:
 
 ```typescript
 const synexa = new Synexa({
-  apiKey: 'your-api-key', // Your Synexa API key
+  auth: process.env.SYNEXA_API_TOKEN // Your Synexa API token
 });
 ```
 
@@ -34,19 +34,15 @@ Run a model and await the result:
 
 ```typescript
 const model = "black-forest-labs/flux-schnell";
-const options = {
-  input: {
-    prompt: "An astronaut riding a rainbow unicorn, cinematic, dramatic"
-  }
+const input = {
+  prompt: "An astronaut riding a rainbow unicorn, cinematic, dramatic"
 };
 
-const outputs = await synexa.run(model, options);
-// outputs is an array of FileOutput objects for URLs or string values
-
-// If the output is a URL, you can:
-if (outputs[0] instanceof FileOutput) {
-  console.log(outputs[0].url()); // Get the URL string
-  const blob = await outputs[0].blob(); // Get the file data as a Blob
+const [output] = await synexa.run(model, { input });
+// If the output is a URL, you get a FileOutput object
+if (output instanceof FileOutput) {
+  console.log(output.url()); // Get the URL string
+  const blob = await output.blob(); // Get the file data as a Blob
 }
 ```
 
@@ -81,7 +77,7 @@ Advanced usage with all options:
 ```typescript
 const controller = new AbortController();
 
-const outputs = await synexa.run("black-forest-labs/flux-schnell", {
+const [output] = await synexa.run("black-forest-labs/flux-schnell", {
   input: {
     prompt: "An astronaut riding a rainbow unicorn, cinematic, dramatic"
   },
@@ -105,7 +101,7 @@ const outputs = await synexa.run("black-forest-labs/flux-schnell", {
 
 | Option | Type | Description |
 |--------|------|-------------|
-| `apiKey` | string | **Required**. Your Synexa API key |
+| `auth` | string | **Required**. Your Synexa API token |
 | `baseUrl` | string | Optional. The base URL for the Synexa API |
 
 ### Run Options
