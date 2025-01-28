@@ -25,7 +25,7 @@ const Synexa = require('synexa').default;
 Instantiate the client:
 
 ```typescript
-const synexa = new Synexa({
+const synexa = new Synexa.default({
   auth: process.env.SYNEXA_API_TOKEN // Your Synexa API token
 });
 ```
@@ -33,6 +33,15 @@ const synexa = new Synexa({
 Run a model and await the result:
 
 ```typescript
+// Simple usage
+const model = "black-forest-labs/flux-schnell";
+const input = {
+  "prompt": "a futuristic robot looking into the distance"
+};
+const [output] = await synexa.run(model, { input });
+console.log(output);
+
+// Advanced usage with file output handling
 const model = "black-forest-labs/flux-schnell";
 const input = {
   prompt: "An astronaut riding a rainbow unicorn, cinematic, dramatic"
